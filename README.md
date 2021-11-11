@@ -61,7 +61,7 @@ Pada /etc/squid/squid.conf ubah sebagi berikut dan tambahkan ```http_access allo
 
 Restart squid dengan command ```service squid restart```
 
-Setelah install lynx, pada Loguetown lakukan command ```export http_proxy="http://jualbelikapal.a12.com:5000”```. Lalu, periksa apakah konfigurasi telah berhasil dengan command ```env | grep -i proxy```
+Setelah install lynx, pada Loguetown lakukan command ```export http_proxy="http://10.5.2.3:5000”```. Lalu, periksa apakah konfigurasi telah berhasil dengan command ```env | grep -i proxy```
 <img width="385" alt="Screenshot 2021-11-11 112702" src="https://user-images.githubusercontent.com/71380876/141282350-ad6857b0-d108-414c-bede-df33d36b91b4.png">
 
 --------------------------------------
