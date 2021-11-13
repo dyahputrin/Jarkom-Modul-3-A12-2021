@@ -456,6 +456,12 @@ Pada /etc/squid/squid.conf tambahkan kofigurasi sebagai berikut <br>
 
 ![1636458721723](https://user-images.githubusercontent.com/71380876/141284083-ebc85a79-cebd-4dcb-84dd-f6203a803778.png)
 
+restart squid
+
+kemudian lakukan testing
+
+![image](https://user-images.githubusercontent.com/81466736/141648001-a50e17ab-7902-40f3-9cc5-7c95f8782c2b.png)
+
 ### soal 10 
 Transaksi jual beli tidak dilakukan setiap hari, oleh karena itu akses internet dibatasi hanya dapat diakses setiap hari Senin-Kamis pukul 07.00-11.00 dan setiap hari Selasa-Jum’at pukul 17.00-03.00 keesokan harinya (sampai Sabtu pukul 03.00)
 
@@ -463,9 +469,11 @@ Buat file baru bernama acl.conf di folder squid <br>
 ```vim /etc/squid/acl.conf```
 
 Tambahkan:
-``acl AVAILABLE_WORKING_1 time MTWH 07:00-11:00
-acl AVAILABLE_WORKING_2 time TWHF 17:00-23:59
-acl AVAILABLE_WORKING_3 time WHFA 00:00-03:00``
+``acl AVAILABLE_WORKING_1 time MTWH 07:00-11:00``
+
+``acl AVAILABLE_WORKING_2 time TWHF 17:00-23:59``
+
+``acl AVAILABLE_WORKING_3 time WHFA 00:00-03:00``
 
 Dan edit seperti gambar di bawah :
 
@@ -585,9 +593,11 @@ Kemudian edit file /etc/squid/squid.conf menjadi sebagai berikut
 Coba membuka google.com dengan lynx di loguetown<br>
 (dapat mengarahkan ke super.franky.a12.com tetapi tidak dapat mengakses super.franky.a12.com)
 
+![image](https://user-images.githubusercontent.com/81466736/141648027-0a36ceb7-1249-443b-9fda-f7ae677b161c.png)
 
-### soal 12. 
-Saatnya berlayar! Luffy dan Zoro akhirnya memutuskan untuk berlayar untuk mencari harta karun di super.franky.yyy.com. Tugas pencarian dibagi menjadi dua misi, Luffy bertugas untuk mendapatkan gambar (.png, .jpg), sedangkan Zoro mendapatkan sisanya. Karena Luffy orangnya sangat teliti untuk mencari harta karun, ketika ia berhasil mendapatkan gambar, ia mendapatkan gambar dan melihatnya dengan kecepatan 10 kbps
+
+### soal 12 dan 13. 
+Saatnya berlayar! Luffy dan Zoro akhirnya memutuskan untuk berlayar untuk mencari harta karun di super.franky.yyy.com. Tugas pencarian dibagi menjadi dua misi, Luffy bertugas untuk mendapatkan gambar (.png, .jpg), sedangkan Zoro mendapatkan sisanya. Karena Luffy orangnya sangat teliti untuk mencari harta karun, ketika ia berhasil mendapatkan gambar, ia mendapatkan gambar dan melihatnya dengan kecepatan 10 kbps. Sedangkan, Zoro yang sangat bersemangat untuk mencari harta karun, sehingga kecepatan kapal Zoro tidak dibatasi ketika sudah mendapatkan harta yang diinginkannya
 
 Di water 7
 
@@ -597,25 +607,25 @@ Buat file acl-bandwidth.conf
  
 Dan tambahkan konfigurasi seperti berikut:
 
-``acl download url_regex -i \.jpg$ \.png$
+acl download url_regex -i \.jpg$ \.png$
 
-auth_param basic program /user/lib/squid/basic_ncsa_auth /etc/squid/passwd
-acl luffy proxy_auth luffybelikapala12
-acl zoro proxy_auth zorobelikapala12
+auth_param basic program /user/lib/squid/basic_ncsa_auth /etc/squid/passwd<br>
+acl luffy proxy_auth luffybelikapala12<br>
+acl zoro proxy_auth zorobelikapala12<br>
 
-delay_pools 2
-delay_class 1 1
-delay_parameters 1 1250/1250
-delay_access 1 allow luffy
-delay_access 1 deny zoro
-delay_access 1 allow download
-delay_access 1 deny all
+delay_pools 2<br>
+delay_class 1 1<br>
+delay_parameters 1 1250/1250<br>
+delay_access 1 allow luffy<br>
+delay_access 1 deny zoro<br>
+delay_access 1 allow download<br>
+delay_access 1 deny all<br>
 
-delay_class 2 1
-delay_parameters 2 -1/-1
-delay_access 2 allow zoro
-delay_access 2 deny luffy
-delay_access 2 deny all``
+delay_class 2 1<br>
+delay_parameters 2 -1/-1<br>
+delay_access 2 allow zoro<br>
+delay_access 2 deny luffy<br>
+delay_access 2 deny all<br>
 
 
 Buka  /etc/squid/squid.conf
@@ -633,3 +643,23 @@ Restart squid
 
 ``Service restart squid``
 
+testing 
+
+saat menngunakan user luffy
+
+![image](https://user-images.githubusercontent.com/81466736/141648156-53cb7b5e-9be1-472e-a0d3-2f7c9fb5e7db.png)
+
+saat menggunakan user zoro
+
+![image](https://user-images.githubusercontent.com/81466736/141648141-d563b375-4f6b-4903-a75a-765f2aaf39f3.png)
+
+
+### Kendala
+1. saat nomor 11 tidak dapat membuka web super.franky.a12.com
+2. testing untuk nomor 12 dan 13 menggunakan website lain karena kendala nomor 1
+
+
+### Pembagian Tugas
+-   Fiqey Indriati Eka Sari (05111940000015)  nomor 1-5
+-   Dyah Putri Nariswari (05111940000047)     nomor 6-9
+-   Muhammad Farrel Abhinaya (05111940000173) nomor 10-13
