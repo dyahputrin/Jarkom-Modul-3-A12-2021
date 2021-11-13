@@ -475,8 +475,11 @@ Dan edit seperti gambar di bawah :
 Edit dan tambahkan 
 
 ``http_access allow USERS AVAILABLE_WORKING_1
+
 http_access allow USERS AVAILABLE_WORKING_2
+
 http_access allow USERS AVAILABLE_WORKING_3
+
 http_access deny all``
 
 
@@ -517,7 +520,7 @@ Dan edit file /etc/bind/kaizoku/super.franky.a12.com
 
 ``Vim /etc/bind/kaizoku/super.franky.a12.com``
 
-![image](https://user-images.githubusercontent.com/81466736/141642974-94ebba60-d4e3-444b-a207-dc79d6228193.png)
+![image](https://user-images.githubusercontent.com/81466736/141643204-77c44499-980f-479b-9252-61fd274a72e9.png)
 
 Restart bind9
 
