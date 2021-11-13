@@ -175,6 +175,7 @@ Pada sesilab ini kita akan membuat domain franky.a12.com sesuai modul 2
 
 -   Isikan configurasi domain franky.a12.com sesuai dengan syntax
      berikut:
+  ```
 
  zone \"franky.a12.com\" {
 
@@ -183,6 +184,7 @@ Pada sesilab ini kita akan membuat domain franky.a12.com sesuai modul 2
  file \"etc/bind/kaizoku/franky.a12.com\";
 
  };
+ ```
 
  ![](./media/image19.png)
  
