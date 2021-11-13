@@ -455,3 +455,178 @@ Pada Water7, install apache2 dengan command ```apt-get install apache2 -y```. Se
 Pada /etc/squid/squid.conf tambahkan kofigurasi sebagai berikut <br>
 
 ![1636458721723](https://user-images.githubusercontent.com/71380876/141284083-ebc85a79-cebd-4dcb-84dd-f6203a803778.png)
+
+### soal 10 
+Transaksi jual beli tidak dilakukan setiap hari, oleh karena itu akses internet dibatasi hanya dapat diakses setiap hari Senin-Kamis pukul 07.00-11.00 dan setiap hari Selasa-Jum’at pukul 17.00-03.00 keesokan harinya (sampai Sabtu pukul 03.00)
+
+Buat file baru bernama acl.conf di folder squid <br>
+```vim /etc/squid/acl.conf```
+
+Tambahkan:
+``acl AVAILABLE_WORKING_1 time MTWH 07:00-11:00
+acl AVAILABLE_WORKING_2 time TWHF 17:00-23:59
+acl AVAILABLE_WORKING_3 time WHFA 00:00-03:00``
+
+Dan edit seperti gambar di bawah :
+
+![image](https://user-images.githubusercontent.com/81466736/141642882-adc9ab24-64e5-4c80-9a70-f18b3452a049.png)
+
+
+Edit dan tambahkan 
+
+``http_access allow USERS AVAILABLE_WORKING_1
+http_access allow USERS AVAILABLE_WORKING_2
+http_access allow USERS AVAILABLE_WORKING_3
+http_access deny all``
+
+
+di  file etc/squid/squid.conf menjadi:
+
+![image](https://user-images.githubusercontent.com/81466736/141642914-b1d2e10f-f0f6-48dc-8133-73dc188df35e.png)
+
+Restart squid <br>
+``Service squid Restart``
+
+Testing dengan membuka http://its.ac.id menggunakan lynx.
+
+ 
+date -s "11 NOV 2021 02:00:00"   (termasuk watu yang tidak bisa mengakses internet) <br>
+date -s "11 NOV 2021 04:00:00"   (termasuk watu yang tidak bisa mengakses internet)
+
+![image](https://user-images.githubusercontent.com/81466736/141642936-bb64b13b-6824-455d-895c-51376ba7e5f9.png)
+
+### soal 11 
+Agar transaksi bisa lebih fokus berjalan, maka dilakukan redirect website agar mudah mengingat website transaksi jual beli kapal. Setiap mengakses google.com, akan diredirect menuju super.franky.yyy.com dengan website yang sama pada soal shift modul 2. Web server super.franky.yyy.com berada pada node Skypie
+
+Pada enies lobby<br>
+Edit file /etc/bind/named.conf.local
+
+``Vim /etc/bind/named.conf.local``
+
+![image](https://user-images.githubusercontent.com/81466736/141642959-cf6808b7-756d-4ff7-9e01-a360290d2942.png)
+
+Buat folder baru bernama kaizoku<br>
+``Mkdir /etc/bind/kaizoku``
+
+
+Copy kan db.local ke dalam folder kaizoku dan ubah nama nya menjadi super.franky.a12.com
+
+``cp /etc/bind/db.local /etc/bind/kaizoku/super.franky.a12.com``
+
+Dan edit file /etc/bind/kaizoku/super.franky.a12.com
+
+``Vim /etc/bind/kaizoku/super.franky.a12.com``
+
+![image](https://user-images.githubusercontent.com/81466736/141642974-94ebba60-d4e3-444b-a207-dc79d6228193.png)
+
+Restart bind9
+
+Pada skypie Install aplikasi apache, PHP, dan libapache2-mod-php7.0.
+
+lakukan apt-get update sebelumnya, lalu install aplikasi di atas
+
+``apt-get install apache2 -y
+
+apt-get install php -y
+
+apt-get install libapache2-mod-php7.0 -y``
+
+
+
+masuk ke dalam directory /etc/apache2/sites-available :
+
+``cd /etc/apache2/sites-available.``
+
+Copy file 000-default.conf dan ubah nama menjadi file super.franky.a12.com.conf.
+
+``cp 000-default.conf super.franky.a12.com.conf``
+
+Edit file franky.a12.com.conf seperti gambar berikut ini:
+
+![image](https://user-images.githubusercontent.com/81466736/141642987-7a0f4d10-1a70-4c69-a3f6-345fa7f4026d.png)
+
+
+pada directory /var/www.
+
+``cd /var/www``
+
+Download file zip yang telah diberikan : <br>
+``wget https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom/raw/main/super.franky.zip dan lakukan unzip``
+
+``unzip super.franky.zip``
+
+Rename folder super.franky menjadi super.franky.a12.com
+
+``mv super.franky super.franky.a12.com``
+
+Aktifkan konfigurasi pada franky.a12.com dengan command:
+
+``a2ensite super.franky.a12.com``
+
+![image](https://user-images.githubusercontent.com/81466736/141643052-233a2997-147d-4f33-a2aa-d9c4c368d011.png)
+
+lakukan restart pada apache
+
+``service apache2 restart``
+
+Pada water 7 <br>
+Buat file bernama restrict-sites.acl di folder squid.<br>
+``vim /etc/squid/restrict-sites.acl``
+tambahkan<br>
+``www.google.com``
+
+Kemudian edit file /etc/squid/squid.conf menjadi sebagai berikut
+
+![image](https://user-images.githubusercontent.com/81466736/141643066-c4b671b7-0543-47c0-bdda-5ad96ea89ad2.png)
+
+Coba membuka google.com dengan lynx di loguetown<br>
+(dapat mengarahkan ke super.franky.a12.com tetapi tidak dapat mengakses super.franky.a12.com)
+
+
+### soal 12. 
+Saatnya berlayar! Luffy dan Zoro akhirnya memutuskan untuk berlayar untuk mencari harta karun di super.franky.yyy.com. Tugas pencarian dibagi menjadi dua misi, Luffy bertugas untuk mendapatkan gambar (.png, .jpg), sedangkan Zoro mendapatkan sisanya. Karena Luffy orangnya sangat teliti untuk mencari harta karun, ketika ia berhasil mendapatkan gambar, ia mendapatkan gambar dan melihatnya dengan kecepatan 10 kbps
+
+Di water 7
+
+Buat file acl-bandwidth.conf
+
+``vim /etc/squid/acl-bandwidth.conf``
+ 
+Dan tambahkan konfigurasi seperti berikut:
+
+``acl download url_regex -i \.jpg$ \.png$
+
+auth_param basic program /user/lib/squid/basic_ncsa_auth /etc/squid/passwd
+acl luffy proxy_auth luffybelikapala12
+acl zoro proxy_auth zorobelikapala12
+
+delay_pools 2
+delay_class 1 1
+delay_parameters 1 1250/1250
+delay_access 1 allow luffy
+delay_access 1 deny zoro
+delay_access 1 allow download
+delay_access 1 deny all
+
+delay_class 2 1
+delay_parameters 2 -1/-1
+delay_access 2 allow zoro
+delay_access 2 deny luffy
+delay_access 2 deny all``
+
+
+Buka  /etc/squid/squid.conf
+
+Dan masukkan :
+
+``include /etc/squid/acl-bandwith.conf ``
+
+seperti gambar di bawah
+
+![image](https://user-images.githubusercontent.com/81466736/141643119-6a31cb45-d174-4fdf-bc71-42b880e3b9be.png)
+
+
+Restart squid 
+
+``Service restart squid``
+
